@@ -111,7 +111,13 @@ if uploaded_file:
                 col_c.metric("ASRS 可入庫率", f"{asrs_rate} %")
                 col_d.metric("料箱適合件數", tote_count)
 
-               st.subheader("📦 儲存型式分佈佔比")
+                st.subheader("📦 儲存型式分佈佔比")
                 fig = px.pie(df_active, names='Storage_Type', hole=0.4, color='Storage_Type',
                              color_discrete_map={'料箱 (Tote)':'#2ecc71', '棧板 (Pallet)':'#3498db', 'Oversize (外場)':'#e74c3c', '尺寸資料不全':'#7f8c8d'})
                 st.plotly_chart(fig, use_container_width=True)
+
+                st.subheader("📋 最終分類明細表")
+                st.dataframe(df_active[['Product_No', 'Status', 'L', 'W', 'H', 'Max_Edge', 'Storage_Type']])
+
+    except Exception as e:
+        st.error(f"檔案解析發生錯誤。請確認「標題列」的數字是否填寫正確，導致系統抓不到欄位名稱？詳細原因：{e}")
